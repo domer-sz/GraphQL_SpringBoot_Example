@@ -1,0 +1,59 @@
+schema {
+    query: Query
+    subscription: Subscriptions
+    mutation: Mutations
+}
+
+type Query {
+    #Zwraca listę artystów
+    artists(offset: Int!, limit: Int!): [Artist]
+    #Zwraca album o podanym id
+    album(id: ID!): Album
+}
+
+interface Rating {
+    rating: Float!
+    asyncRating: Float!
+}
+
+type Artist implements Rating{
+    id: ID!
+    name: String!
+    albums(limit: Int = 0): [Album]!
+    #Ocena pobierana synchronicznie
+    rating: Float!
+    #Ocena pobierana asynchronicznie
+    asyncRating: Float!
+}
+
+type Album implements Rating{
+    id: ID!
+    title: String!
+    tracks(limit: Int = 0): [Track]!
+    #Ocena pobierana synchronicznie
+    rating: Float!
+    #Ocena pobierana asynchronicznie
+    asyncRating: Float!
+}
+
+type Track {
+    id: ID!,
+    name: String!
+    genre: Genre!
+    composer: String,
+    unitPrice: Float!
+}
+
+type Genre {
+    name: String!
+}
+
+type Mutations {
+    #Dodaje utwór do albumu
+    addTrackToAlbum(albumId: Int!, name: String!, genre: String!, composer: String!, unitPrice: Float): Track
+}
+
+type Subscriptions {
+    #Zwraca subskrypcje wszystkich utworów
+    tracks: String!
+}
