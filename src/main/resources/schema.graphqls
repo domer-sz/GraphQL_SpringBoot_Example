@@ -21,7 +21,7 @@ type Artist implements Rating{
     name: String!
     albums(limit: Int = 0): [Album]!
     #Ocena pobierana synchronicznie
-    rating: Float!
+    rating: Float! @deprecated(reason: "not working")
     #Ocena pobierana asynchronicznie
     asyncRating: Float!
 }

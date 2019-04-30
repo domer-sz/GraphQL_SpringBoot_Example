@@ -11,6 +11,7 @@ import dev.sdom.graphql.demo.domain.ports.RatingServiceClient
 import dev.sdom.graphql.demo.domain.ports.TrackRepository
 import org.reactivestreams.Publisher
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 import java.math.BigDecimal
 import java.util.concurrent.CompletableFuture
 
@@ -24,7 +25,7 @@ class GraphQlQuery(private val artistRepository: ArtistRepository, private val a
 @Service
 class GraphQlArtistResolver(private val ratingServiceClient: RatingServiceClient) : GraphQLResolver<Artist> {
         fun albums(artist: Artist, limit: Int): List<Album> = artist.albums.limit(limit)
-        fun rating(artist: Artist): String = ratingServiceClient.getSyncRatingForArtist(artist.id)
+        fun rating(artist: Artist): String = throw RuntimeException("Failed to load rating")
         fun asyncRating(artist: Artist): CompletableFuture<String> = ratingServiceClient.getAsyncRatingForArtist(artist.id)
 }
 
