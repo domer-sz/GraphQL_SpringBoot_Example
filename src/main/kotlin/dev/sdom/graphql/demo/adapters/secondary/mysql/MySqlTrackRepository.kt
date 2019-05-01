@@ -11,7 +11,7 @@ import java.math.BigDecimal
 class MySqlTrackRepository(private val jdbcTemplate: JdbcTemplate) : TrackRepository {
 
         override fun getTrackName(trackId: Long): String =
-                jdbcTemplate.queryForObject("SELECT Name FROM Track where TrackId = ?", arrayOf(trackId), String::class.java)
+                jdbcTemplate.queryForObject("SELECT Name FROM Chinook.Track where TrackId = ?", arrayOf(trackId), String::class.java)
 
 
         override fun save(albumId: Long, name: String, genre: String, composer: String, unitPrice: BigDecimal): Track {
@@ -26,15 +26,15 @@ class MySqlTrackRepository(private val jdbcTemplate: JdbcTemplate) : TrackReposi
         }
 
         private fun getNewTrackId() =
-                jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Track", Long::class.java)?.plus(1)
+                jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Chinook.Track", Long::class.java)?.plus(1)
                         ?: throw RuntimeException("Can't insert new Track")
 
         private fun getGenreId(genre: String): Long {
                 return try {
-                        jdbcTemplate.queryForObject("SELECT GenreId FROM GENRE where Name= ?", arrayOf(genre), Long::class.java)
+                        jdbcTemplate.queryForObject("SELECT GenreId FROM Chinook.GENRE where Name= ?", arrayOf(genre), Long::class.java)
                 } catch (ex: Exception) {
                         ex.printStackTrace()
-                        val newGenreId = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Genre", Long::class.java)?.plus(1)
+                        val newGenreId = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Chinook.Genre", Long::class.java)?.plus(1)
                         jdbcTemplate.update(
                                 "INSERT INTO Genre (GenreId, Name) VALUES (?, ?)",
                                 newGenreId

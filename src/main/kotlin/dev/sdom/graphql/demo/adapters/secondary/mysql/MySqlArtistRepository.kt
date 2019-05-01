@@ -21,10 +21,10 @@ class MySqlArtistRepository(private val jdbcTemplate: JdbcTemplate) : ArtistRepo
         override fun getArtists(offset: Long, limit: Long): List<Artist>? = jdbcTemplate.query(
          """
             SELECT Album.AlbumId, Album.Title, LimitedArtist.Name as ArtistName, LimitedArtist.ArtistId, Track.TrackId, Track.Name as TrackName, Track.TrackId, Genre.Name as GenreName, Track.Composer, Track.UnitPrice
-            FROM (SELECT * FROM Artist LIMIT ?, ?) as LimitedArtist
-                INNER JOIN Album on Album.ArtistId = LimitedArtist.ArtistId
-                INNER JOIN Track on Album.AlbumId = Track.AlbumId
-                INNER JOIN Genre on Track.GenreId = Genre.GenreId
+            FROM (SELECT * FROM Chinook.Artist LIMIT ?, ?) as LimitedArtist
+                INNER JOIN Chinook.Album on Album.ArtistId = LimitedArtist.ArtistId
+                INNER JOIN Chinook.Track on Album.AlbumId = Track.AlbumId
+                INNER JOIN Chinook.Genre on Track.GenreId = Genre.GenreId
          """.trimIndent(),
                 arrayOf(offset, limit),
                 ResultSetExtractor { rs: ResultSet ->

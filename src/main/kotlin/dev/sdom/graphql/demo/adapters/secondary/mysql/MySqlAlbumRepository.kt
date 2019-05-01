@@ -14,10 +14,10 @@ class MySqlAlbumRepository(private val jdbcTemplate: JdbcTemplate) : AlbumReposi
         override fun getAlbum(albumId: String): Album? = jdbcTemplate.query(
         """
             Select Album.AlbumId, Album.Title, Artist.Name as ArtistName, Artist.ArtistId, Track.TrackId, Track.Name as TrackName, Track.TrackId, Genre.Name as GenreName, Track.Composer, Track.UnitPrice
-            FROM Album
-                INNER JOIN Artist on Album.ArtistId = Artist.ArtistId
-                INNER JOIN Track on Album.AlbumId = Track.AlbumId
-                INNER JOIN Genre on Track.GenreId = Genre.GenreId
+            FROM Chinook.Album
+                INNER JOIN Chinook.Artist on Album.ArtistId = Artist.ArtistId
+                INNER JOIN Chinook.Track on Album.AlbumId = Track.AlbumId
+                INNER JOIN Chinook.Genre on Track.GenreId = Genre.GenreId
                 WHERE Album.AlbumId = ?
          """.trimIndent(),
                  arrayOf(albumId),
